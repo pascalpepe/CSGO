@@ -3,7 +3,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-from flask import Flask
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -15,8 +14,8 @@ from app3 import App3
 from homepage import Homepage
 
 
-server = Flask(__name__)
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.UNITED], server=server)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.UNITED])
+server = app.server
 app.config.suppress_callback_exceptions = True
 app.layout = html.Div([
     dcc.Location(id = 'url', refresh = False),
