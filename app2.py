@@ -2,6 +2,7 @@ import ast
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.figure_factory as ff
@@ -13,7 +14,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 df = pd.read_csv('dybilal.csv')
 df.date = pd.to_datetime(df.date).dt.date
-df['date_int'] = pd.to_datetime(df.date).astype(int)//1e9
+df['date_int'] = pd.to_datetime(df.date).astype(np.int64)//1e9
 
 for col in df.columns:
     if type(df[col][0]) is str:
@@ -119,7 +120,7 @@ page_2 = html.Div([
 
 
     # TROISEME GRAPH SCATTER + CALLBACK MAP
-    
+
     html.Div([
         html.Div([
             dcc.Dropdown(
@@ -150,7 +151,7 @@ html.Div([
                 value='Deaths'
             )
             ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
-        
+
     ], style={
         'borderBottom': 'thin lightgrey solid',
         'backgroundColor': 'rgb(250, 250, 250)',

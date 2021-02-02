@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
+import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.figure_factory as ff
@@ -35,7 +36,7 @@ def display_page(pathname):
 ## CALLBACKS DEUXIEME PAGE
 df = pd.read_csv('dybilal.csv')
 df.date = pd.to_datetime(pd.to_datetime(df.date).dt.date)
-df['date_int'] = df.date.astype(int)//1e9
+df['date_int'] = df.date.astype(np.int64)//1e9
 all_date = sorted(df.date)
 dt_all = pd.date_range(start=all_date[0],end=all_date[-1])
 dt_obs = [d.strftime("%Y-%m-%d") for d in pd.to_datetime(df['date'])]
@@ -74,7 +75,7 @@ def update_graph(ma, feature):
 
     fig = px.violin(dg, y=feature, color=df.Player_Name, box=True, points="all",
             color_discrete_map=colors,
-          hover_data=['Kills', 'Deaths', 'Assists', 'Percentage of kills with a headshot', 
+          hover_data=['Kills', 'Deaths', 'Assists', 'Percentage of kills with a headshot',
           'Percentage of rounds with a Kill, Assist, Survived or Death Traded'])
     return fig
 
@@ -86,7 +87,7 @@ def update_graph(ma, feature):
 def update_graph(ma, feature):
     dg = df.loc[df.map.str.contains(ma)].groupby('Player_Name')[feature].mean()
     dg = pd.DataFrame(dg).reset_index()
-    
+
     fig = px.bar_polar(dg, r=feature, theta='Player_Name',
                    color=feature, template="plotly_dark",
                    color_discrete_sequence= px.colors.sequential.Plasma_r)
